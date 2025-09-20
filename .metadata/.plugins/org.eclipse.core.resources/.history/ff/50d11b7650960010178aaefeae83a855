@@ -1,0 +1,35 @@
+package com.subham.app1;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+@RestController
+public class App1Application {
+
+	private final RestTemplate restTemplate = new RestTemplate();
+
+	public static void main(String[] args) {
+		SpringApplication.run(App1Application.class, args);
+	}
+
+	// Example: App1 GET -> calls App2 GET /hbt
+	@GetMapping("/call-hbt")
+	public String callHbt() {
+		String url = "http://app2:8080/hbt"; // use container name "app2"
+		return restTemplate.getForObject(url, String.class);
+	}
+
+	// Example: App1 POST -> calls App2 POST /send
+	@PostMapping("/call-send")
+	public String callSend(@RequestBody String body) {
+		String url = "http://app2:8080/send"; // use container name "app2"
+		return restTemplate.postForObject(url, body, String.class);
+	}
+
+}

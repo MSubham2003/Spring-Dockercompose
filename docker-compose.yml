@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app2:
+    build: ./app2
+    container_name: app2
+    hostname: app2.local
+    networks:
+      appnet:
+        aliases:
+          - app2.local
+    ports:
+      - "8080:8080"
+
+  app1:
+    build: ./app1
+    container_name: app1
+    hostname: app1.local
+    networks:
+      appnet:
+        aliases:
+          - app1.local
+    ports:
+      - "8081:8081"
+    depends_on:
+      - app2
+
+networks:
+  appnet:
+    driver: bridge
+
